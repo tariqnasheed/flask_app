@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import os
 import sqlite3
 from datetime import datetime
@@ -103,10 +103,12 @@ def register():
         return render_template("success.html", username=full_name, show_login=True)
 
 
+@app.route('/download-documentation')
+def download_documentation():
+    return send_from_directory(app.root_path, 'project_documentation.pdf', as_attachment=True)
+
+
 if __name__ == "__main__":
     init_db()
     app.run(debug=True)
     
-    
-    
-
