@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Successful</title>
+    <style>
+        body { font-family: Arial, sans-serif; background:#f4f7fc; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+        .card { background:#fff; padding:30px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.08); text-align:center; }
+        h2 { color:#2d3748; margin-bottom:10px; }
+        p { color:#4a5568; margin-bottom:20px; }
+        a.btn { display:inline-block; padding:10px 18px; background:#007BFF; color:#fff; border-radius:6px; text-decoration:none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>{{ 'Registration Successful' if show_login else 'Login Successful' }}</h2>
+        <p>
+            {% if show_login %}
+                Welcome, {{ username }}. Your account has been created successfully.
+            {% else %}
+                Welcome, {{ username }}. You are logged in.
+            {% endif %}
+        </p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a class="btn" href="/">Go Home</a>
+            {% if show_login %}
+                <a class="btn" href="/login">Go to Login</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
