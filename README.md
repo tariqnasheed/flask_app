@@ -1,0 +1,2 @@
+# flask_app
+MY FIRST FLASK APP FOR PRACTICE
