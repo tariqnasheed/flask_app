@@ -145,3 +145,217 @@ python -m venv .venv
 ## PDF Documentation
 
 A PDF version of this documentation is also generated in the project root as `project_documentation.pdf`.
+
+-------------------------------------------------------------------------------------------
+## REST APIs
+
+### What is a REST API?
+- In simple terms, a REST API is an architectural style used to create separation of concerns between the client (user end) and the server. It acts as a data manager on the server that is responsible for processing client requests using the HTTP protocol. It executes server-side logic—such as validating input data, authenticating and authorizing requests, and communicating with the database—before serializing the response into JSON format to send back to the client."
+- REST stands for Representational State Transfer.
+- It is an architectural style for designing networked applications.
+- A REST API exposes resources (data entities like users, products, posts) via URLs and standard HTTP methods.
+
+### Key principles
+- **Resources**: Everything is a resource identified by a URI, e.g. `/users/123`.
+- **Stateless**: Each request contains all information needed; the server does not store client session state.
+- **Uniform interface**: Use standard HTTP methods consistently:
+  - `GET` = retrieve
+  - `POST` = create
+  - `PUT` = update/replace
+  - `PATCH` = partial update
+  - `DELETE` = delete
+- **Representation**: Resources are exchanged as representations, typically JSON or XML.
+- **Client-server separation**: Client and server are separate roles; the client handles UI, the server handles data and logic.
+- **Layered system**: Clients don’t need to know if they talk to the actual server, a proxy, or a load balancer.
+
+### Why REST is useful
+- Simple and widely adopted
+- Works over HTTP without special protocols
+- Easy to consume from many programming languages
+- Clean separation between client and server
+- Scales well for web and mobile applications
+
+---
+
+## HTTP Protocol
+
+### What is HTTP?
+- HTTP is the Hypertext Transfer Protocol.
+- It is the foundation of data communication for the World Wide Web.
+- It defines how clients and servers exchange messages.
+
+### HTTP request structure
+- Request line: method + path + protocol version  
+  Example: `GET /users/123 HTTP/1.1`
+- Headers: metadata such as `Host`, `Content-Type`, `Accept`, `Authorization`
+- Body: optional data for methods like `POST`, `PUT`, or `PATCH`
+
+### HTTP methods
+- `GET`: read resource
+- `POST`: create resource
+- `PUT`: update/replace resource
+- `PATCH`: partial update
+- `DELETE`: remove resource
+- `HEAD`: request headers only
+- `OPTIONS`: discover supported methods
+
+### HTTP responses
+- Status line: protocol + status code + reason phrase  
+  Example: `HTTP/1.1 200 OK`
+- Headers: metadata like `Content-Type`, `Cache-Control`, `Location`
+- Body: data payload, often JSON for APIs
+
+### Common HTTP status codes
+- `200 OK`: successful read or action
+- `201 Created`: resource created
+- `204 No Content`: success with no response body
+- `400 Bad Request`: invalid request
+- `401 Unauthorized`: missing or invalid credentials
+- `403 Forbidden`: no permission
+- `404 Not Found`: resource not found
+- `500 Internal Server Error`: server failure
+
+### Why HTTP matters
+- It is universal for web communication.
+- REST APIs use HTTP methods and status codes to express intent clearly.
+- It is supported by browsers, mobile apps, servers, libraries, and command-line tools.
+
+---
+
+## cURL
+
+### What is cURL?
+- cURL is a command-line tool for transferring data with URLs.
+- It supports HTTP, HTTPS, FTP, and many other protocols.
+- It is widely used for testing APIs and making requests from scripts.
+
+### Why use cURL?
+- Fast way to test REST endpoints
+- Works without writing code
+- Useful for debugging headers, payloads, authentication, and response status
+- Common in documentation examples and CI scripts
+
+### Example usage
+```bash
+curl https://api.example.com/users/123
+```
+
+POST with JSON:
+```bash
+curl -X POST https://api.example.com/users \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Alice","email":"alice@example.com"}'
+```
+
+GET with authorization:
+```bash
+curl -H "Authorization: Bearer TOKEN" https://api.example.com/profile
+```
+
+### Why cURL is important
+- It lets developers verify server behavior directly.
+- It helps isolate whether a problem is in the client code or API server.
+- It is the “universal client” for HTTP-based services.
+
+---
+
+## JSON
+
+### What is JSON?
+- JSON stands for JavaScript Object Notation.
+- It is a lightweight, text-based data interchange format.
+- It is human-readable and easy for machines to parse.
+
+### JSON structure
+- Objects: `{ "name": "Alice", "age": 30 }`
+- Arrays: `[1, 2, 3]`
+- Values: strings, numbers, booleans, null, objects, arrays
+
+### Example
+```json
+{
+  "id": 123,
+  "name": "Alice",
+  "email": "alice@example.com",
+  "roles": ["admin", "editor"]
+}
+```
+
+### Why JSON is used
+- Simple syntax
+- Language-agnostic support
+- Ideal for REST APIs
+- Commonly used for request and response payloads
+- Easier to read and debug than XML
+
+---
+
+## Caching
+
+### What is caching?
+- Caching stores copies of data or responses so that future requests can be served faster.
+- It reduces repeated work, lowers latency, and decreases server load.
+
+### Where caching happens
+- **Client cache**: browser or app stores responses locally
+- **Proxy cache**: intermediate server caches responses
+- **Server cache**: application server stores computed results
+- **Database cache**: query results stored in memory or cache systems like Redis
+
+### HTTP caching headers
+- `Cache-Control`: specifies caching policies
+  - `Cache-Control: max-age=3600` means cache for one hour
+  - `Cache-Control: no-cache` means validate before reuse
+- `Expires`: defines absolute expiration time
+- `ETag`: unique tag for a resource version
+- `Last-Modified`: last update timestamp
+- `If-None-Match` / `If-Modified-Since`: conditional requests to validate cache
+
+### Why caching is used
+- Improves performance by avoiding repeated computation or database reads
+- Reduces bandwidth usage
+- Makes APIs faster and more responsive
+- Helps systems scale under load
+- Allows content to be reused safely when it has not changed
+
+---
+
+## How these pieces fit together
+
+- **HTTP** is the protocol used to send and receive REST API requests.
+- **REST APIs** use HTTP methods and URLs to expose data and operations.
+- **JSON** is the most common format for encoding resource requests and responses.
+- **cURL** is a tool for sending HTTP requests and testing REST APIs.
+- **Caching** makes repeated API requests faster and reduces server work.
+
+### Example flow
+1. A mobile app sends a `GET /api/users/123` request over HTTP.
+2. The server returns a JSON response with user data.
+3. The client may cache that response locally for later use.
+4. The next request can reuse the cached response if data is still fresh.
+5. If the client wants to create a new user, it sends a `POST` request with JSON body.
+6. The server processes the request and returns a status code like `201 Created`.
+
+---
+
+## Deep explanation: why this matters
+
+### For developers
+- REST + HTTP + JSON create a standard way for apps to communicate.
+- It makes APIs easier to design, document, and consume.
+- Tools like cURL let you test APIs independently of UI or client code.
+
+### For performance
+- Caching prevents repetitive work and improves speed.
+- HTTP caching lets clients and intermediaries reuse responses safely.
+- Proper caching design is essential for scalable web applications.
+
+### For compatibility
+- HTTP is universal, so any platform can call REST APIs.
+- JSON is supported by virtually every programming language.
+- This combination enables web, mobile, desktop, and IoT systems to interact.
+
+### For maintainability
+- REST APIs keep resource behavior predictable.
+- HTTP status codes make error handling standardized.
+- Clear request/response formats reduce bugs and simplify integration.
